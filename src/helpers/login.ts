@@ -1,7 +1,13 @@
+import { NavigateFunction } from 'react-router-dom';
 import { API_URLS, BASE_URL } from '../app/apiUrls';
 import { UserData } from '../app/interfaces';
 
-export const login = (user: UserData) => {
+interface IProps {
+  navigate: NavigateFunction;
+  user: UserData;
+}
+
+export const login = ({ navigate, user }: IProps) => {
   const url = `${BASE_URL}${API_URLS.login}`;
 
   fetch(url, {
@@ -13,5 +19,9 @@ export const login = (user: UserData) => {
     body: JSON.stringify(user),
   })
     .then((response) => response.json())
-    .then((response) => console.log(JSON.stringify(response)));
+    .then((response) => {
+      const { key } = response;
+      document.cookie = `token=${key}; SameSite=None; Secure`;
+    })
+    .then(() => navigate('/home'));
 };

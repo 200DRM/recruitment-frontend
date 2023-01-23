@@ -1,16 +1,19 @@
 import { ChangeEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { UserData } from '../app/interfaces';
 import { Button } from './Button';
 import { InputElement } from './InputElement';
 import { login } from '../helpers/login';
 
 export const LoginForm = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState<UserData>({ username: '', password: '' });
 
   const handleSubmit = (e: ChangeEvent<EventTarget>) => {
     e.preventDefault();
 
-    login(user);
+    login({ navigate, user });
   };
 
   return (
