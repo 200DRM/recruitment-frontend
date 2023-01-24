@@ -4,11 +4,14 @@ import { UserData } from '../app/interfaces';
 
 interface IProps {
   navigate: NavigateFunction;
+  setLoading: (state: boolean) => void;
   user: UserData;
 }
 
-export const login = ({ navigate, user }: IProps) => {
+export const login = ({ navigate, setLoading, user }: IProps) => {
   const url = `${BASE_URL}${API_URLS.login}`;
+
+  setLoading(true);
 
   fetch(url, {
     method: 'POST',
@@ -23,5 +26,8 @@ export const login = ({ navigate, user }: IProps) => {
       const { key } = response;
       document.cookie = `token=${key}; SameSite=None; Secure`;
     })
-    .then(() => navigate('/home'));
+    .then(() => {
+      setLoading(false);
+      navigate('/home');
+    });
 };
