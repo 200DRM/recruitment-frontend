@@ -1,9 +1,17 @@
 import styled from 'styled-components';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import { MAP_DEFAULT_ZOOM, MAP_SOURCE_URL, MAP_VENDOR_NAME, MAP_VENDOR_URL } from '../app/constants';
+import {
+  MAP_DEFAULT_ZOOM,
+  MAP_SOURCE_URL,
+  MAP_VENDOR_NAME,
+  MAP_VENDOR_URL,
+} from '../app/constants';
+import { Button } from './Button';
 
 export const Map = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <StyledMapContainer
@@ -16,9 +24,12 @@ export const Map = () => {
           attribution={`&copy; '<a href=${MAP_VENDOR_URL}>${MAP_VENDOR_NAME}</a>'`}
         />
         <Outlet />
+        <StyledBackButton>
+          <Button onClick={() => navigate('/home')}>{`<< BACK`}</Button>
+        </StyledBackButton>
       </StyledMapContainer>
     </>
-  )
+  );
 };
 
 const StyledMapContainer = styled(MapContainer)`
@@ -28,4 +39,11 @@ const StyledMapContainer = styled(MapContainer)`
   right: 0;
   bottom: 0;
   z-index: 100;
+`;
+
+const StyledBackButton = styled.div`
+  position: absolute;
+  z-index: 400;
+  bottom: 0;
+  margin: 2vw;
 `;
