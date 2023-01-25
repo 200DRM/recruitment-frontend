@@ -1,4 +1,5 @@
 import { ChangeEvent, useContext, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { UserData } from '../app/interfaces';
@@ -8,6 +9,7 @@ import { login } from '../helpers/login';
 import { LoginContext } from '../contexts/login';
 
 export const LoginForm = () => {
+  const dispatch = useDispatch();
   const { setLoading } = useContext(LoginContext);
   const navigate = useNavigate();
   const [user, setUser] = useState<UserData>({ username: '', password: '' });
@@ -15,7 +17,9 @@ export const LoginForm = () => {
   const handleSubmit = (e: ChangeEvent<EventTarget>) => {
     e.preventDefault();
 
-    login({ navigate, setLoading, user });
+    if (user?.username !== '' && user?.password !== '') {
+      login({ dispatch, navigate, setLoading, user });
+    }
   };
 
   return (

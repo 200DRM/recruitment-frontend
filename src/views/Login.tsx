@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Loader } from '../components/Loader';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 import { LoginContext } from '../contexts/login';
 import { LoginBackground } from '../components/LoginBackground';
 import { LoginForm } from '../components/LoginForm';
@@ -17,8 +17,8 @@ export const Login = () => {
       }}
     >
       <>
-        {!loading ? (
-          <Loader />
+        {loading ? (
+          <LoadingSpinner />
         ) : (
           <>
             <LoginSidebar>

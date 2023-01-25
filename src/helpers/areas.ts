@@ -1,11 +1,15 @@
+import { AnyAction } from '@reduxjs/toolkit';
+import { Dispatch } from 'react';
+
 import { API_URLS, BASE_URL } from '../app/apiUrls';
+import { setMainData } from '../redux/areas';
 
 interface IProps {
-  setData: any;
+  dispatch: Dispatch<AnyAction>;
   token: string;
 }
 
-export const getMainData = async ({ setData, token }: IProps) => {
+export const getMainData = async ({ dispatch, token }: IProps) => {
   const url = `${BASE_URL}${API_URLS.data}`;
 
   const data = await fetch(url, {
@@ -17,5 +21,5 @@ export const getMainData = async ({ setData, token }: IProps) => {
     },
   });
   const dataToJSON = await data.json();
-  setData(dataToJSON);
+  await dispatch(setMainData(dataToJSON));
 };

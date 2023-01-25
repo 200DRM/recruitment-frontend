@@ -1,26 +1,33 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Circle, Polygon } from 'react-leaflet';
-import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { getMainData } from '../helpers/areas';
 import { getCookie } from '../helpers/cookie';
 import { MainData } from '../app/interfaces';
 
+interface IRootState {
+  areas: {
+    mainData: MainData | undefined;
+  };
+}
+
 export const Data = () => {
   const token = getCookie('token') || '';
-  const [data, setData] = useState<MainData | undefined>(undefined);
+  const dispatch = useDispatch();
+  const { mainData } = useSelector((state: IRootState) => state.areas);
 
   useEffect(() => {
     if (token) {
-      getMainData({ setData, token });
+      getMainData({ dispatch, token });
     }
   }, [token]);
 
   const polygon = useMemo(() => {
-    if (data?.coordinates_bounding_box) {
+    if (mainData?.coordinates_bounding_box) {
       const {
         coordinates_bounding_box: { bottom, left, right, top },
-      } = data;
+      } = mainData;
       const positions: [number, number][] = [
         [top, left],
         [top, right],
@@ -30,7 +37,7 @@ export const Data = () => {
 
       return (
         <Polygon pathOptions={{ color: 'transparent' }} positions={positions}>
-          {data?.data?.map((circleRow: number[], index) => {
+          {mainData?.data?.map((circleRow: number[], index) => {
             const circleLeft = left + Number(`0.00${index + 1}`);
             return (
               <div className="circleRow">
@@ -57,7 +64,7 @@ export const Data = () => {
         </Polygon>
       );
     }
-  }, [data]);
+  }, [mainData]);
 
   return polygon || null;
 };
