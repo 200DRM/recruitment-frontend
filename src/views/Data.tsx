@@ -1,16 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Circle, Polygon } from 'react-leaflet';
+import { useEffect, useMemo } from 'react';
+import { Polygon } from 'react-leaflet';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getMainData } from '../helpers/areas';
 import { getCookie } from '../helpers/cookie';
-import { MainData } from '../app/interfaces';
-
-interface IRootState {
-  areas: {
-    mainData: MainData | undefined;
-  };
-}
+import { IRootState } from '../app/interfaces';
 
 export const Data = () => {
   const token = getCookie('token') || '';
@@ -36,32 +30,7 @@ export const Data = () => {
       ];
 
       return (
-        <Polygon pathOptions={{ color: 'transparent' }} positions={positions}>
-          {mainData?.data?.map((circleRow: number[], index) => {
-            const circleLeft = left + Number(`0.00${index + 1}`);
-            return (
-              <div className="circleRow">
-                {circleRow.map((circle: number, i) => {
-                  const circleTop = top - Number(`0.00${i + 1}`);
-
-                  return (
-                    <Circle
-                      center={[circleTop, circleLeft]}
-                      //TODO: proper styling
-                      pathOptions={{
-                        color: 'purple',
-                        fill: true,
-                        fillOpacity: 1,
-                        stroke: false,
-                      }}
-                      radius={50}
-                    />
-                  );
-                })}
-              </div>
-            );
-          })}
-        </Polygon>
+        <Polygon pathOptions={{ color: 'purple' }} positions={positions} />
       );
     }
   }, [mainData]);
