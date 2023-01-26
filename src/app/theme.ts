@@ -29,5 +29,5 @@ export const theme = {
     blackTransparent78: 'rgba(0,0,0,0.78)',
 
     error: '#FF000087',
-  }
+  },
 };
